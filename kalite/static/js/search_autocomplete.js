@@ -103,7 +103,12 @@ function fetchLocalOrRemote() {
         for (idx in node_types) {
             var node_type = node_types[idx];
             var item_name = ls_key(node_type, lang);
-            _nodes[node_type] = JSON.parse(localStorage.getItem(item_name)); // coerce string back to JSON
+            _nodes[node_type] = JSON.parse(localStorage.getItem(item_name)) || []; // coerce string back to JSON
+            num_nodes += Object.keys(_nodes[node_type]).length;
+        }
+        if (!num_nodes) {
+            fetchTopicTree(lang);
+            return;
         }
 
         // After getting by type, flatten
